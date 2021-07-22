@@ -133,6 +133,7 @@ namespace AutoLayout
             if (LayoutZipFile == null) return;
             if (QmkMsysPath == null) return;
             if (OutputPath == null) return;
+            if (QmkRepoPath == null) return;
 
             string directoryName = Path.GetFileNameWithoutExtension(LayoutZipFile);
             string fileDirectory = Path.GetDirectoryName(LayoutZipFile);
@@ -154,10 +155,10 @@ namespace AutoLayout
                 file.CopyTo($"{OutputPath}\\{file.Name}", true);
             }
 
-            LaunchQMK();
+            LaunchQmkMsys();
         }
 
-        private void LaunchQMK()
+        private void LaunchQmkMsys()
         {
             ProcessStartInfo startInfo = new()
             {
