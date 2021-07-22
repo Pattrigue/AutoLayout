@@ -46,11 +46,12 @@ namespace AutoLayout
 
         private void OutputSelectButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var dialog = new CommonOpenFileDialog();
-            dialog.IsFolderPicker = true;
-            CommonFileDialogResult result = dialog.ShowDialog();
-            
-            if (result == CommonFileDialogResult.Ok)
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = true
+            };
+
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 outputPath = dialog.FileName;
                 SelectedOuputDirectoryText.Content = outputPath;
