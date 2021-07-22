@@ -2,11 +2,11 @@
 
 namespace AutoLayout
 {
-    public sealed class KeymapFileGetter
+    public static class KeymapFileGetter
     {
         private const string KeymapFileName = "keymap.c";
 
-        public FileInfo GetKeymapFile(DirectoryInfo directory)
+        public static FileInfo GetKeymapFile(DirectoryInfo directory)
         {
             FileInfo[] files = directory.GetFiles("*.c", SearchOption.AllDirectories);
 

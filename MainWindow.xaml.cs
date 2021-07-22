@@ -38,7 +38,7 @@ namespace AutoLayout
 
             ZipFile.ExtractToDirectory(filePath, outputDirectory.FullName);
 
-            var file = new KeymapFileGetter().GetKeymapFile(outputDirectory);
+            var file = KeymapFileGetter.GetKeymapFile(outputDirectory);
             KeymapModifier.InsertCode(file);
         }
     }

@@ -10,10 +10,13 @@ namespace AutoLayout
         private const string IncludeString = "#include \"pattriue_danish.h\"";
         private const string ProcessInputString = "  if (!process_record_user_danish(keycode, record)) return false;";
         private const string MatrixScanString = "void matrix_scan_user(void) {\ncheck_danish_mod_tap_timers();\n}";
+        private const string CFileName = "pattrigue_danish.c";
 
         public static void InsertCode(FileInfo file)
         {
-            List<string> lines = new List<string>(File.ReadAllLines(file.FullName).ToList());
+            List<string> lines = new(File.ReadAllLines(file.FullName).ToList());
+
+            InsertCFile(file.DirectoryName);
 
             InsertInclude(lines);
             InsertProcessInput(lines);
@@ -61,6 +64,14 @@ namespace AutoLayout
         private static void InsertMatrixScan(List<string> lines)
         {
             lines.Add(MatrixScanString);
+        }
+
+        private static void InsertCFile(string directory)
+        {
+            string cFile = $"{AppDomain.CurrentDomain.BaseDirectory}{CFileName}";
+            string destination = $"{directory}\\{CFileName}";
+
+            File.Copy(cFile, destination);
         }
     }
 }
