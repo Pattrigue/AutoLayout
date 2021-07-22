@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 
 namespace AutoLayout
 {
@@ -11,26 +12,56 @@ namespace AutoLayout
     /// </summary>
     public partial class MainWindow
     {
+        private string QmkPath
+        {
+            get => qmkPath;
+            set
+            {
+                qmkPath = value;
+
+                if (value == string.Empty) return;
+
+                SelectedQmkPathText.Content = value;
+            }
+        }
+
+        private string LayoutZipFile
+        {
+            get => layoutZipFile;
+            set
+            {
+                layoutZipFile = value;
+
+                if (value == string.Empty) return;
+
+                SelectedFileText.Content = Path.GetFileName(layoutZipFile);
+            }
+        }
+
+        private string OutputPath
+        {
+            get => outputPath;
+            set
+            {
+                outputPath = value;
+                
+                if (value == string.Empty) return;
+
+                SelectedOuputDirectoryText.Content = value;
+            }
+        }
+
         private string qmkPath;
+        private string layoutZipFile;
         private string outputPath;
-        private string filePath;
-        private string fileDirectory;
 
         public MainWindow()
         {
             InitializeComponent();
-        }
 
-        private void FileSelectButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new();
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                filePath = openFileDialog.FileName;
-                fileDirectory = Path.GetDirectoryName(filePath);
-                SelectedFileText.Content = Path.GetFileName(filePath);
-            }
+            QmkPath = Properties.Settings.Default.QMKPath;
+            LayoutZipFile = Properties.Settings.Default.LayoutZipFile;
+            OutputPath = Properties.Settings.Default.OutputPath;
         }
 
         private void SetQmkPathButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -39,8 +70,19 @@ namespace AutoLayout
 
             if (openFileDialog.ShowDialog() == true)
             {
-                qmkPath = openFileDialog.FileName;
-                SelectedQmkPathText.Content = qmkPath;
+                QmkPath = openFileDialog.FileName;
+                Properties.Settings.Default.QMKPath = QmkPath;
+            }
+        }
+
+        private void FileSelectButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new();
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                LayoutZipFile = openFileDialog.FileName;
+                Properties.Settings.Default.LayoutZipFile = LayoutZipFile;
             }
         }
 
@@ -53,23 +95,31 @@ namespace AutoLayout
 
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                outputPath = dialog.FileName;
-                SelectedOuputDirectoryText.Content = outputPath;
+                OutputPath = dialog.FileName;
+                Properties.Settings.Default.OutputPath = OutputPath;
             }
         }
 
         private void MakeButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (filePath == null) return;
-            if (qmkPath == null) return;
+            if (LayoutZipFile == null) return;
+            if (QmkPath == null) return;
+            if (OutputPath == null) return;
 
-            string directoryName = Path.GetFileNameWithoutExtension(filePath);
-            DirectoryInfo outputDirectory = Directory.CreateDirectory($"{fileDirectory}/{directoryName}");
+            string directoryName = Path.GetFileNameWithoutExtension(LayoutZipFile);
+            string fileDirectory = Path.GetDirectoryName(LayoutZipFile); 
 
-            ZipFile.ExtractToDirectory(filePath, outputDirectory.FullName);
+            DirectoryInfo unzippedDirectory = Directory.CreateDirectory($"{fileDirectory}/{directoryName}");
 
-            FileInfo keymapFile = KeymapFileGetter.GetKeymapFile(outputDirectory);
+            ZipFile.ExtractToDirectory(LayoutZipFile, unzippedDirectory.FullName);
+
+            FileInfo keymapFile = KeymapFileGetter.GetKeymapFile(unzippedDirectory);
             KeymapModifier.InsertCode(keymapFile);
+
+            foreach (FileInfo file in keymapFile.Directory.GetFiles())
+            {
+                file.CopyTo($"{OutputPath}\\{file.Name}", true);
+            }
 
             LaunchQMK();
         }
@@ -79,12 +129,18 @@ namespace AutoLayout
             ProcessStartInfo startInfo = new()
             {
                 UseShellExecute = false,
-                FileName = qmkPath,
-                Arguments = $"-Dir {fileDirectory}"
+                FileName = QmkPath,
+                Arguments = $"-Dir {OutputPath}"
             };
 
             using Process qmkProcess = Process.Start(startInfo);
             qmkProcess.WaitForExit();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            Properties.Settings.Default.Save(); 
         }
     }
 }
