@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace AutoLayout
 {
@@ -11,6 +12,7 @@ namespace AutoLayout
     public partial class MainWindow
     {
         private string qmkPath;
+        private string outputPath;
         private string filePath;
         private string fileDirectory;
 
@@ -42,9 +44,21 @@ namespace AutoLayout
             }
         }
 
+        private void OutputSelectButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+            CommonFileDialogResult result = dialog.ShowDialog();
+            
+            if (result == CommonFileDialogResult.Ok)
+            {
+                outputPath = dialog.FileName;
+                SelectedOuputDirectoryText.Content = outputPath;
+            }
+        }
+
         private void MakeButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            LaunchQMK();
             if (filePath == null) return;
             if (qmkPath == null) return;
 
@@ -56,6 +70,7 @@ namespace AutoLayout
             FileInfo keymapFile = KeymapFileGetter.GetKeymapFile(outputDirectory);
             KeymapModifier.InsertCode(keymapFile);
 
+            LaunchQMK();
         }
 
         private void LaunchQMK()
@@ -64,7 +79,7 @@ namespace AutoLayout
             {
                 UseShellExecute = false,
                 FileName = qmkPath,
-                Arguments = "-cd Documents"
+                Arguments = $"-Dir {fileDirectory}"
             };
 
             using Process qmkProcess = Process.Start(startInfo);

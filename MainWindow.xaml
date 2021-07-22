@@ -7,12 +7,14 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <Grid HorizontalAlignment="Left" Height="262" Margin="10,10,0,0" VerticalAlignment="Top" Width="497">
-            <Label Name="SelectedQmkPathText" Content="No QMK path set..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="57" Width="477"/>
-            <Button Content="Set QMK MSYS path" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="122" Click="SetQmkPathButton_Click"/>
-            <Label Name="SelectedFileText" Content="No file selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top" Height="57" Width="477"/>
-            <Button Content="Select file" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Width="122" Click="FileSelectButton_Click"/>
-            <Button Content="Make" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="75" Click="MakeButton_Click"/>
+        <Grid HorizontalAlignment="Left" Height="299" Margin="10,10,0,0" VerticalAlignment="Top" Width="497">
+            <Label Name="SelectedQmkPathText" Content="No QMK path set..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
+            <Button Content="Set QMK MSYS path" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="122" Click="SetQmkPathButton_Click"/>
+            <Label Name="SelectedFileText" Content="No file selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,83,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
+            <Button Content="Select file" HorizontalAlignment="Left" Margin="10,118,0,0" VerticalAlignment="Top" Width="122" Click="FileSelectButton_Click"/>
+            <Label Name="SelectedOuputDirectoryText" Content="No output directory selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="0,150,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
+            <Button Content="Set output directory" HorizontalAlignment="Left" Margin="10,185,0,0" VerticalAlignment="Top" Width="122" Click="OutputSelectButton_Click"/>
+            <Button Content="Make" HorizontalAlignment="Left" Margin="10,242,0,0" VerticalAlignment="Top" Width="75" Click="MakeButton_Click"/>
         </Grid>
     </Grid>
 </Window>
