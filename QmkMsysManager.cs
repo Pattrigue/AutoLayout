@@ -1,10 +1,17 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Threading;
+using System;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace AutoLayout
 {
     public static class QmkMsysManager
     {
+        [DllImport("User32.dll")]
+        private static extern int SetForegroundWindow(IntPtr point);
+
         public static void CopyFiles(DirectoryInfo directory, string outputPath)
         {
             foreach (FileInfo file in directory.GetFiles())
@@ -22,8 +29,16 @@ namespace AutoLayout
                 Arguments = $"-Dir {QmkRepoPath}"
             };
 
-            using Process qmkProcess = Process.Start(startInfo);
-            qmkProcess.WaitForExit();
+            using Process qmkMsysProcess = Process.Start(startInfo);
+
+            Thread.Sleep(1000); // maut
+
+            qmkMsysProcess.WaitForInputIdle();
+            IntPtr h = qmkMsysProcess.MainWindowHandle;
+            SetForegroundWindow(h);
+            SendKeys.SendWait("make moonlander:pattrigue\n");
+
+            qmkMsysProcess.WaitForExit();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace AutoLayout
 {
     public static class KeymapModifier
     {
-        private const string IncludeString = "#include \"pattrigue_danish.h\"";
+        private const string IncludeString = "#include \"pattrigue_danish.c\"";
         private const string ProcessInputString = "  if (!process_record_user_danish(keycode, record)) return false;";
         private const string MatrixScanString = "void matrix_scan_user(void) {\ncheck_danish_mod_tap_timers();\n}";
         private const string CFileName = "pattrigue_danish.c";
