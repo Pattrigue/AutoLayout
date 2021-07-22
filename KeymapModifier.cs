@@ -14,7 +14,7 @@ namespace AutoLayout
 
         public static void InsertCode(FileInfo file)
         {
-            List<string> lines = new(File.ReadAllLines(file.FullName).ToList());
+            List<string> lines = new(File.ReadAllLines(file.FullName));
 
             InsertCFile(file.DirectoryName);
 
