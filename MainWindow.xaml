@@ -5,16 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoLayout"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="418.542" Width="525">
     <Grid>
-        <Grid HorizontalAlignment="Left" Height="299" Margin="10,10,0,0" VerticalAlignment="Top" Width="497">
-            <Label Name="SelectedQmkPathText" Content="No QMK path set..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
-            <Button Content="Set QMK MSYS path" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="122" Click="SetQmkPathButton_Click"/>
-            <Label Name="SelectedFileText" Content="No file selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,83,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
-            <Button Content="Select file" HorizontalAlignment="Left" Margin="10,118,0,0" VerticalAlignment="Top" Width="122" Click="FileSelectButton_Click"/>
-            <Label Name="SelectedOuputDirectoryText" Content="No output directory selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="0,150,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
-            <Button Content="Set output directory" HorizontalAlignment="Left" Margin="10,185,0,0" VerticalAlignment="Top" Width="122" Click="OutputSelectButton_Click"/>
-            <Button Content="Make" HorizontalAlignment="Left" Margin="10,242,0,0" VerticalAlignment="Top" Width="75" Click="MakeButton_Click"/>
+        <Grid HorizontalAlignment="Left" Height="354" Margin="10,10,0,0" VerticalAlignment="Top" Width="497">
+            <Label Name="SelectedQmkMsysPathText" Content="No QMK MSYS path set..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
+            <Button Content="Set QMK MSYS path" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="122" Click="SetQmkMsysPathButton_Click"/>
+            <Label Name="SelectedFileText" Content="No file selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
+            <Button Content="Select file" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Width="122" Click="FileSelectButton_Click"/>
+            <Label Name="SelectedOuputDirectoryText" Content="No output directory selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="0,130,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
+            <Button Content="Set output directory" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="122" Click="OutputSelectButton_Click"/>
+            <Label Name="SelectedQmkRepoText" Content="No QMK repo selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="0,70,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
+            <Button Content="Set QMK repo" HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" Width="122" Click="SetQmkRepoButton_Click"/>
+            <Button Content="Make" HorizontalAlignment="Left" Margin="10,286,0,0" VerticalAlignment="Top" Width="75" Click="MakeButton_Click"/>
         </Grid>
     </Grid>
 </Window>

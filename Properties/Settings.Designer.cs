@@ -26,12 +26,12 @@ namespace AutoLayout.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string QMKPath {
+        public string QmkMsysPath {
             get {
-                return ((string)(this["QMKPath"]));
+                return ((string)(this["QmkMsysPath"]));
             }
             set {
-                this["QMKPath"] = value;
+                this["QmkMsysPath"] = value;
             }
         }
         
@@ -56,6 +56,18 @@ namespace AutoLayout.Properties {
             }
             set {
                 this["LayoutZipFile"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string QmkRepoPath {
+            get {
+                return ((string)(this["QmkRepoPath"]));
+            }
+            set {
+                this["QmkRepoPath"] = value;
             }
         }
     }

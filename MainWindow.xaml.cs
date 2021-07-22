@@ -12,16 +12,28 @@ namespace AutoLayout
     /// </summary>
     public partial class MainWindow
     {
-        private string QmkPath
+        private string QmkMsysPath
         {
-            get => qmkPath;
+            get => qmkMsysPath;
             set
             {
-                qmkPath = value;
+                qmkMsysPath = value;
 
                 if (value == string.Empty) return;
 
-                SelectedQmkPathText.Content = value;
+                SelectedQmkMsysPathText.Content = value;
+            }
+        }
+        private string QmkRepoPath
+        {
+            get => qmkRepoPath;
+            set
+            {
+                qmkRepoPath = value;
+
+                if (value == string.Empty) return;
+
+                SelectedQmkRepoText.Content = value;
             }
         }
 
@@ -51,7 +63,8 @@ namespace AutoLayout
             }
         }
 
-        private string qmkPath;
+        private string qmkMsysPath;
+        private string qmkRepoPath;
         private string layoutZipFile;
         private string outputPath;
 
@@ -59,19 +72,34 @@ namespace AutoLayout
         {
             InitializeComponent();
 
-            QmkPath = Properties.Settings.Default.QMKPath;
+            QmkMsysPath = Properties.Settings.Default.QmkMsysPath;
+            QmkRepoPath = Properties.Settings.Default.QmkRepoPath;
             LayoutZipFile = Properties.Settings.Default.LayoutZipFile;
             OutputPath = Properties.Settings.Default.OutputPath;
         }
 
-        private void SetQmkPathButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void SetQmkMsysPathButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new();
 
             if (openFileDialog.ShowDialog() == true)
             {
-                QmkPath = openFileDialog.FileName;
-                Properties.Settings.Default.QMKPath = QmkPath;
+                QmkMsysPath = openFileDialog.FileName;
+                Properties.Settings.Default.QmkMsysPath = QmkMsysPath;
+            }
+        }
+
+        private void SetQmkRepoButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = true
+            };
+
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                QmkRepoPath = dialog.FileName;
+                Properties.Settings.Default.QmkRepoPath = QmkRepoPath;
             }
         }
 
@@ -103,13 +131,18 @@ namespace AutoLayout
         private void MakeButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             if (LayoutZipFile == null) return;
-            if (QmkPath == null) return;
+            if (QmkMsysPath == null) return;
             if (OutputPath == null) return;
 
             string directoryName = Path.GetFileNameWithoutExtension(LayoutZipFile);
-            string fileDirectory = Path.GetDirectoryName(LayoutZipFile); 
+            string fileDirectory = Path.GetDirectoryName(LayoutZipFile);
 
             DirectoryInfo unzippedDirectory = Directory.CreateDirectory($"{fileDirectory}/{directoryName}");
+            
+            if (Directory.Exists(unzippedDirectory.FullName))
+            {
+                Directory.Delete(unzippedDirectory.FullName, true);
+            }
 
             ZipFile.ExtractToDirectory(LayoutZipFile, unzippedDirectory.FullName);
 
@@ -129,8 +162,8 @@ namespace AutoLayout
             ProcessStartInfo startInfo = new()
             {
                 UseShellExecute = false,
-                FileName = QmkPath,
-                Arguments = $"-Dir {OutputPath}"
+                FileName = QmkMsysPath,
+                Arguments = $"-Dir {QmkRepoPath}"
             };
 
             using Process qmkProcess = Process.Start(startInfo);
