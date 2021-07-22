@@ -12,7 +12,7 @@
             <Button Content="Set QMK MSYS path" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="122" Click="SetQmkMsysPathButton_Click"/>
             <Label Name="SelectedFileText" Content="No file selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
             <Button Content="Select file" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Width="122" Click="FileSelectButton_Click"/>
-            <Label Name="SelectedOuputDirectoryText" Content="No output directory selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="0,130,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
+            <Label Name="SelectedKeymapOutputText" Content="No output directory selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="0,130,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
             <Button Content="Set output directory" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="122" Click="OutputSelectButton_Click"/>
             <Label Name="SelectedQmkRepoText" Content="No QMK repo selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="0,70,0,0" VerticalAlignment="Top" Height="30" Width="477"/>
             <Button Content="Set QMK repo" HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" Width="122" Click="SetQmkRepoButton_Click"/>

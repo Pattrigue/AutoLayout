@@ -1,7 +1,5 @@
 ﻿using Microsoft.Win32;
-using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 
@@ -50,23 +48,23 @@ namespace AutoLayout
             }
         }
 
-        private string OutputPath
+        private string KeymapOutputPath
         {
-            get => outputPath;
+            get => keymapOutputPath;
             set
             {
-                outputPath = value;
+                keymapOutputPath = value;
                 
                 if (value == string.Empty) return;
 
-                SelectedOuputDirectoryText.Content = value;
+                SelectedKeymapOutputText.Content = value;
             }
         }
 
         private string qmkMsysPath;
         private string qmkRepoPath;
         private string layoutZipFile;
-        private string outputPath;
+        private string keymapOutputPath;
 
         public MainWindow()
         {
@@ -75,7 +73,7 @@ namespace AutoLayout
             QmkMsysPath = Properties.Settings.Default.QmkMsysPath;
             QmkRepoPath = Properties.Settings.Default.QmkRepoPath;
             LayoutZipFile = Properties.Settings.Default.LayoutZipFile;
-            OutputPath = Properties.Settings.Default.OutputPath;
+            KeymapOutputPath = Properties.Settings.Default.OutputPath;
         }
 
         private void SetQmkMsysPathButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -91,7 +89,7 @@ namespace AutoLayout
 
         private void SetQmkRepoButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog
+            CommonOpenFileDialog dialog = new()
             {
                 IsFolderPicker = true
             };
@@ -116,15 +114,15 @@ namespace AutoLayout
 
         private void OutputSelectButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog
+            CommonOpenFileDialog dialog = new()
             {
                 IsFolderPicker = true
             };
 
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                OutputPath = dialog.FileName;
-                Properties.Settings.Default.OutputPath = OutputPath;
+                KeymapOutputPath = dialog.FileName;
+                Properties.Settings.Default.OutputPath = KeymapOutputPath;
             }
         }
 
@@ -132,44 +130,17 @@ namespace AutoLayout
         {
             if (LayoutZipFile == null) return;
             if (QmkMsysPath == null) return;
-            if (OutputPath == null) return;
+            if (KeymapOutputPath == null) return;
             if (QmkRepoPath == null) return;
 
-            string directoryName = Path.GetFileNameWithoutExtension(LayoutZipFile);
-            string fileDirectory = Path.GetDirectoryName(LayoutZipFile);
-
-            DirectoryInfo unzippedDirectory = Directory.CreateDirectory($"{fileDirectory}/{directoryName}");
-            
-            if (Directory.Exists(unzippedDirectory.FullName))
-            {
-                Directory.Delete(unzippedDirectory.FullName, true);
-            }
-
-            ZipFile.ExtractToDirectory(LayoutZipFile, unzippedDirectory.FullName);
-
+            DirectoryInfo unzippedDirectory = Unzipper.UnzipLayoutFile(LayoutZipFile);
             FileInfo keymapFile = KeymapFileGetter.GetKeymapFile(unzippedDirectory);
             KeymapModifier.InsertCode(keymapFile);
 
-            foreach (FileInfo file in keymapFile.Directory.GetFiles())
-            {
-                file.CopyTo($"{OutputPath}\\{file.Name}", true);
-            }
-
-            LaunchQmkMsys();
+            QmkMsysManager.CopyFiles(keymapFile.Directory, KeymapOutputPath);
+            QmkMsysManager.Launch(QmkMsysPath, QmkRepoPath);
         }
 
-        private void LaunchQmkMsys()
-        {
-            ProcessStartInfo startInfo = new()
-            {
-                UseShellExecute = false,
-                FileName = QmkMsysPath,
-                Arguments = $"-Dir {QmkRepoPath}"
-            };
-
-            using Process qmkProcess = Process.Start(startInfo);
-            qmkProcess.WaitForExit();
-        }
 
         protected override void OnClosed(EventArgs e)
         {
