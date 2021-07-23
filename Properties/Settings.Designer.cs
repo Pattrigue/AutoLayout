@@ -70,5 +70,17 @@ namespace AutoLayout.Properties {
                 this["QmkRepoPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Command {
+            get {
+                return ((string)(this["Command"]));
+            }
+            set {
+                this["Command"] = value;
+            }
+        }
     }
 }

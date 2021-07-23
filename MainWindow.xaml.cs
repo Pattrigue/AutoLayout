@@ -5,7 +5,6 @@ using System;
 
 namespace AutoLayout
 {
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -15,6 +14,7 @@ namespace AutoLayout
         private AppSetting qmkRepo;
         private AppSetting keymapOutput;
         private AppSetting layoutZipFile;
+        private AppSetting command;
 
         public MainWindow()
         {
@@ -24,6 +24,7 @@ namespace AutoLayout
             qmkRepo = new AppSetting(SelectedQmkRepoText, "QmkRepoPath", Properties.Settings.Default.QmkRepoPath);
             layoutZipFile = new AppSetting(SelectedZipFileText, "LayoutZipFile", Properties.Settings.Default.LayoutZipFile);
             keymapOutput = new AppSetting(SelectedKeymapOutputText, "OutputPath", Properties.Settings.Default.OutputPath);
+            command = new AppSetting(CommandTextBox, "Command", Properties.Settings.Default.Command);
         }
 
         private void SetQmkMsysPathButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -84,13 +85,14 @@ namespace AutoLayout
             KeymapModifier.InsertCode(keymapFile);
 
             QmkMsysManager.CopyFiles(keymapFile.Directory, keymapOutput.Value);
-            QmkMsysManager.Launch(qmkMsys.Value, qmkRepo.Value);
+            QmkMsysManager.Launch(qmkMsys.Value, qmkRepo.Value, CommandTextBox.Text);
         }
 
 
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
+            command.Value = CommandTextBox.Text;
             Properties.Settings.Default.Save(); 
         }
     }

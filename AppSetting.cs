@@ -13,19 +13,28 @@ namespace AutoLayout
 
                 if (value == string.Empty) return;
 
-                label.Content = value;
                 Properties.Settings.Default[key] = value;
+
+                switch (content)
+                {
+                    case Label label:
+                        label.Content = value;
+                        break;
+                    case TextBox textBox:
+                        textBox.Text = value;
+                        break;
+                }
             }
         }
 
-        private readonly Label label;
+        private readonly Control content;
         private readonly string key;
 
         private string value;
 
-        public AppSetting(Label label, string key, string value)
+        public AppSetting(Control label, string key, string value)
         {
-            this.label = label;
+            this.content = label;
             this.key = key;
             Value = value;
         }

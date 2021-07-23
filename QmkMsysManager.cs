@@ -20,13 +20,13 @@ namespace AutoLayout
             }
         }
 
-        public static void Launch(string QmkMsysPath, string QmkRepoPath)
+        public static void Launch(string qmkMsysPath, string qmkRepoPath, string command)
         {
             ProcessStartInfo startInfo = new()
             {
                 UseShellExecute = false,
-                FileName = QmkMsysPath,
-                Arguments = $"-Dir {QmkRepoPath}"
+                FileName = qmkMsysPath,
+                Arguments = $"-Dir {qmkRepoPath}"
             };
 
             using Process qmkMsysProcess = Process.Start(startInfo);
@@ -36,7 +36,7 @@ namespace AutoLayout
             qmkMsysProcess.WaitForInputIdle();
             IntPtr h = qmkMsysProcess.MainWindowHandle;
             SetForegroundWindow(h);
-            SendKeys.SendWait("make moonlander:pattrigue\n");
+            SendKeys.SendWait($"{command}\n");
 
             qmkMsysProcess.WaitForExit();
         }

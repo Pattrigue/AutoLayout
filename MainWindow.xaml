@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoLayout"
         mc:Ignorable="d"
-        Title="MainWindow" Height="418.542" Width="705.833">
+        Title="MainWindow" Height="460" Width="700">
     <Window.Resources>
         <GridLength x:Key="GridHeight">60*</GridLength>
         <Thickness x:Key="ButtonMargin" Left="0" Top="25" Right="0" Bottom="0" />
@@ -23,6 +23,7 @@
             <RowDefinition Height="{StaticResource GridHeight}"/>
             <RowDefinition Height="{StaticResource GridHeight}"/>
             <RowDefinition Height="{StaticResource GridHeight}"/>
+            <RowDefinition Height="{StaticResource GridHeight}"/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <Label Name="SelectedQmkMsysPathText" Content="No QMK MSYS path set..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="658" Grid.Column="1" Grid.Row="1"/>
@@ -33,6 +34,8 @@
         <Button Content="Set output directory" HorizontalAlignment="Center" Margin="{StaticResource ButtonMargin}" VerticalAlignment="Top" Width="122" Click="OutputSelectButton_Click" Grid.Column="1" Grid.Row="3"/>
         <Label Name="SelectedQmkRepoText" Content="No QMK repo selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="668" Grid.Column="1" Grid.Row="4"/>
         <Button Content="Set QMK repo" HorizontalAlignment="Center" Margin="{StaticResource ButtonMargin}" VerticalAlignment="Top" Width="122" Click="SetQmkRepoButton_Click" Grid.Column="1" Grid.Row="4"/>
-        <Button Content="Make" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Click="MakeButton_Click" Grid.Column="1" Grid.Row="5"/>
+        <Label Name="CommandLabel" Content="Command to fire:" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="668" Grid.Column="1" Grid.Row="5"/>
+        <TextBox Name="CommandTextBox" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="23" Margin="0, 15, 0, 0" TextWrapping="Wrap" Text="make moonlander:pattrigue" VerticalAlignment="Center" Width="400"  Grid.Column="1" Grid.Row="5"/>
+        <Button Content="Make" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Click="MakeButton_Click" Grid.Column="1" Grid.Row="6"/>
     </Grid>
 </Window>
