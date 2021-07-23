@@ -8,7 +8,7 @@
     <Setting Name="OutputPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="LayoutZipFile" Type="System.String" Scope="User">
+    <Setting Name="DownloadPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="QmkRepoPath" Type="System.String" Scope="User">

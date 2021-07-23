@@ -50,12 +50,12 @@ namespace AutoLayout.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LayoutZipFile {
+        public string DownloadPath {
             get {
-                return ((string)(this["LayoutZipFile"]));
+                return ((string)(this["DownloadPath"]));
             }
             set {
-                this["LayoutZipFile"] = value;
+                this["DownloadPath"] = value;
             }
         }
         

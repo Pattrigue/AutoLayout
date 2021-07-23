@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
+using System.Net;
 
 namespace AutoLayout
 {
@@ -10,11 +11,15 @@ namespace AutoLayout
     /// </summary>
     public partial class MainWindow
     {
-        private AppSetting qmkMsys;
-        private AppSetting qmkRepo;
-        private AppSetting keymapOutput;
-        private AppSetting layoutZipFile;
-        private AppSetting command;
+        private const string LayoutZipFileName = "MyLayout.zip";
+
+        private string LayoutZipPath => $"{downloadPath.Value}\\{LayoutZipFileName}";
+
+        private readonly AppSetting qmkMsys;
+        private readonly AppSetting qmkRepo;
+        private readonly AppSetting keymapOutput;
+        private readonly AppSetting downloadPath;
+        private readonly AppSetting command;
 
         public MainWindow()
         {
@@ -22,7 +27,7 @@ namespace AutoLayout
 
             qmkMsys = new AppSetting(SelectedQmkMsysPathText, "QmkMsysPath", Properties.Settings.Default.QmkMsysPath);
             qmkRepo = new AppSetting(SelectedQmkRepoText, "QmkRepoPath", Properties.Settings.Default.QmkRepoPath);
-            layoutZipFile = new AppSetting(SelectedZipFileText, "LayoutZipFile", Properties.Settings.Default.LayoutZipFile);
+            downloadPath = new AppSetting(SelectedDownloadPathText, "DownloadPath", Properties.Settings.Default.DownloadPath);
             keymapOutput = new AppSetting(SelectedKeymapOutputText, "OutputPath", Properties.Settings.Default.OutputPath);
             command = new AppSetting(CommandTextBox, "Command", Properties.Settings.Default.Command);
         }
@@ -52,11 +57,14 @@ namespace AutoLayout
 
         private void FileSelectButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new();
-
-            if (openFileDialog.ShowDialog() == true)
+            CommonOpenFileDialog dialog = new()
             {
-                layoutZipFile.Value = openFileDialog.FileName;
+                IsFolderPicker = true
+            };
+
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                downloadPath.Value = dialog.FileName;
             }
         }
 
@@ -75,12 +83,14 @@ namespace AutoLayout
 
         private void MakeButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (layoutZipFile.Value == null) return;
+            if (downloadPath.Value == null) return;
             if (qmkMsys.Value == null) return;
             if (keymapOutput.Value == null) return;
             if (qmkRepo.Value == null) return;
 
-            DirectoryInfo unzippedDirectory = Unzipper.UnzipLayoutFile(layoutZipFile.Value);
+            DownloadLayout();
+
+            DirectoryInfo unzippedDirectory = Unzipper.UnzipLayoutFile(LayoutZipPath);
             FileInfo keymapFile = KeymapFileGetter.GetKeymapFile(unzippedDirectory);
             KeymapModifier.InsertCode(keymapFile);
 
@@ -88,6 +98,13 @@ namespace AutoLayout
             QmkMsysManager.Launch(qmkMsys.Value, qmkRepo.Value, CommandTextBox.Text);
         }
 
+        private void DownloadLayout()
+        {
+            string downloadUrl = DownloadTextBox.Text;
+
+            using WebClient client = new();
+            client.DownloadFile(downloadUrl, LayoutZipPath);
+        }
 
         protected override void OnClosed(EventArgs e)
         {
