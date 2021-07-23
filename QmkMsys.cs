@@ -14,14 +14,7 @@ namespace AutoLayout
 
         public static void Launch(string qmkMsysPath, string qmkRepoPath, string command)
         {
-            ProcessStartInfo startInfo = new()
-            {
-                UseShellExecute = false,
-                FileName = qmkMsysPath,
-                Arguments = $"-Dir {qmkRepoPath}"
-            };
-
-            using Process qmkMsysProcess = Process.Start(startInfo);
+            Process qmkMsysProcess = CreateQmkProcess(qmkMsysPath, qmkRepoPath);
 
             Thread.Sleep(1000); // we partake in a little tomfoolery
 
@@ -31,6 +24,31 @@ namespace AutoLayout
             SendKeys.SendWait($"{command}\n");
 
             qmkMsysProcess.WaitForExit();
+        }
+
+        private static Process CreateQmkProcess(string qmkMsysPath, string qmkRepoPath)
+        {
+            Process qmkMsysProcess;
+
+            Process[] existingProcess = Process.GetProcessesByName("ConEmu64");
+
+            if (existingProcess.Length > 0)
+            {
+                qmkMsysProcess = existingProcess[0];
+            }
+            else
+            {
+                ProcessStartInfo startInfo = new()
+                {
+                    UseShellExecute = false,
+                    FileName = qmkMsysPath,
+                    Arguments = $"-Dir {qmkRepoPath}"
+                };
+
+                qmkMsysProcess = Process.Start(startInfo);
+            }
+
+            return qmkMsysProcess;
         }
     }
 }
