@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace AutoLayout
 {
-    public static class QmkMsysManager
+    public static class QmkMsys
     {
         [DllImport("User32.dll")]
         private static extern int SetForegroundWindow(IntPtr point);

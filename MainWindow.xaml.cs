@@ -10,8 +10,8 @@ namespace AutoLayout
     /// </summary>
     public partial class MainWindow
     {
-        private readonly AppSetting qmkMsys;
-        private readonly AppSetting qmkRepo;
+        private readonly AppSetting qmkMsysPath;
+        private readonly AppSetting qmkRepoPath;
         private readonly AppSetting keymapOutput;
         private readonly AppSetting downloadPath;
         private readonly AppSetting command;
@@ -20,8 +20,8 @@ namespace AutoLayout
         {
             InitializeComponent();
 
-            qmkMsys = new AppSetting(SelectedQmkMsysPathText, "QmkMsysPath", Properties.Settings.Default.QmkMsysPath);
-            qmkRepo = new AppSetting(SelectedQmkRepoText, "QmkRepoPath", Properties.Settings.Default.QmkRepoPath);
+            qmkMsysPath = new AppSetting(SelectedQmkMsysPathText, "QmkMsysPath", Properties.Settings.Default.QmkMsysPath);
+            qmkRepoPath = new AppSetting(SelectedQmkRepoText, "QmkRepoPath", Properties.Settings.Default.QmkRepoPath);
             downloadPath = new AppSetting(SelectedDownloadPathText, "DownloadPath", Properties.Settings.Default.DownloadPath);
             keymapOutput = new AppSetting(SelectedKeymapOutputText, "OutputPath", Properties.Settings.Default.OutputPath);
             command = new AppSetting(CommandTextBox, "Command", Properties.Settings.Default.Command);
@@ -33,7 +33,7 @@ namespace AutoLayout
 
             if (openFileDialog.ShowDialog() == true)
             {
-                qmkMsys.Value = openFileDialog.FileName;
+                qmkMsysPath.Value = openFileDialog.FileName;
             }
         }
 
@@ -46,7 +46,7 @@ namespace AutoLayout
 
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                qmkRepo.Value = dialog.FileName;
+                qmkRepoPath.Value = dialog.FileName;
             }
         }
 
@@ -79,9 +79,9 @@ namespace AutoLayout
         private void MakeButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             if (downloadPath.Value == null) return;
-            if (qmkMsys.Value == null) return;
+            if (qmkMsysPath.Value == null) return;
             if (keymapOutput.Value == null) return;
-            if (qmkRepo.Value == null) return;
+            if (qmkRepoPath.Value == null) return;
 
             FileManager.DownloadLayout(DownloadTextBox.Text, downloadPath.Value, out string layoutZipPath);
 
@@ -92,7 +92,7 @@ namespace AutoLayout
             FileManager.CopyFiles(keymapFile.Directory, keymapOutput.Value);
             FileManager.CleanUpDownloadedFiles(layoutZipPath, unzippedDirectory.FullName);
 
-            QmkMsysManager.Launch(qmkMsys.Value, qmkRepo.Value, CommandTextBox.Text);
+            QmkMsys.Launch(qmkMsysPath.Value, qmkRepoPath.Value, CommandTextBox.Text);
         }
 
         protected override void OnClosed(EventArgs e)
