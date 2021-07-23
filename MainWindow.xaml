@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoLayout"
         mc:Ignorable="d"
-        Title="MainWindow" Height="460" Width="700">
+        Title="AutoLayout" Height="460" Width="700">
     <Window.Resources>
         <GridLength x:Key="GridHeight">60*</GridLength>
         <Thickness x:Key="ButtonMargin" Left="0" Top="25" Right="0" Bottom="0" />
