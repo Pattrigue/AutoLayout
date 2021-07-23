@@ -2,7 +2,6 @@
 using System.IO;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
-using System.Net;
 
 namespace AutoLayout
 {
@@ -11,10 +10,6 @@ namespace AutoLayout
     /// </summary>
     public partial class MainWindow
     {
-        private const string LayoutZipFileName = "MyLayout.zip";
-
-        private string LayoutZipPath => $"{downloadPath.Value}\\{LayoutZipFileName}";
-
         private readonly AppSetting qmkMsys;
         private readonly AppSetting qmkRepo;
         private readonly AppSetting keymapOutput;
@@ -88,22 +83,16 @@ namespace AutoLayout
             if (keymapOutput.Value == null) return;
             if (qmkRepo.Value == null) return;
 
-            DownloadLayout();
+            FileManager.DownloadLayout(DownloadTextBox.Text, downloadPath.Value, out string layoutZipPath);
 
-            DirectoryInfo unzippedDirectory = Unzipper.UnzipLayoutFile(LayoutZipPath);
+            DirectoryInfo unzippedDirectory = Unzipper.UnzipLayoutFile(layoutZipPath);
             FileInfo keymapFile = KeymapFileGetter.GetKeymapFile(unzippedDirectory);
             KeymapModifier.InsertCode(keymapFile);
 
-            QmkMsysManager.CopyFiles(keymapFile.Directory, keymapOutput.Value);
+            FileManager.CopyFiles(keymapFile.Directory, keymapOutput.Value);
+            FileManager.CleanUpDownloadedFiles(layoutZipPath, unzippedDirectory.FullName);
+
             QmkMsysManager.Launch(qmkMsys.Value, qmkRepo.Value, CommandTextBox.Text);
-        }
-
-        private void DownloadLayout()
-        {
-            string downloadUrl = DownloadTextBox.Text;
-
-            using WebClient client = new();
-            client.DownloadFile(downloadUrl, LayoutZipPath);
         }
 
         protected override void OnClosed(EventArgs e)

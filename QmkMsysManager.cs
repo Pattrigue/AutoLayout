@@ -12,14 +12,6 @@ namespace AutoLayout
         [DllImport("User32.dll")]
         private static extern int SetForegroundWindow(IntPtr point);
 
-        public static void CopyFiles(DirectoryInfo directory, string outputPath)
-        {
-            foreach (FileInfo file in directory.GetFiles())
-            {
-                file.CopyTo($"{outputPath}\\{file.Name}", true);
-            }
-        }
-
         public static void Launch(string qmkMsysPath, string qmkRepoPath, string command)
         {
             ProcessStartInfo startInfo = new()
