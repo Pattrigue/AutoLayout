@@ -31,7 +31,7 @@ namespace AutoLayout
 
             using Process qmkMsysProcess = Process.Start(startInfo);
 
-            Thread.Sleep(1000); // maut
+            Thread.Sleep(1000); // we partake in a little tomfoolery
 
             qmkMsysProcess.WaitForInputIdle();
             IntPtr h = qmkMsysProcess.MainWindowHandle;
