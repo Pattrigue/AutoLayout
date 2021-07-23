@@ -5,75 +5,25 @@ using System;
 
 namespace AutoLayout
 {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
-        private string QmkMsysPath
-        {
-            get => qmkMsysPath;
-            set
-            {
-                qmkMsysPath = value;
-
-                if (value == string.Empty) return;
-
-                SelectedQmkMsysPathText.Content = value;
-            }
-        }
-        private string QmkRepoPath
-        {
-            get => qmkRepoPath;
-            set
-            {
-                qmkRepoPath = value;
-
-                if (value == string.Empty) return;
-
-                SelectedQmkRepoText.Content = value;
-            }
-        }
-
-        private string LayoutZipFile
-        {
-            get => layoutZipFile;
-            set
-            {
-                layoutZipFile = value;
-
-                if (value == string.Empty) return;
-
-                SelectedFileText.Content = Path.GetFileName(layoutZipFile);
-            }
-        }
-
-        private string KeymapOutputPath
-        {
-            get => keymapOutputPath;
-            set
-            {
-                keymapOutputPath = value;
-                
-                if (value == string.Empty) return;
-
-                SelectedKeymapOutputText.Content = value;
-            }
-        }
-
-        private string qmkMsysPath;
-        private string qmkRepoPath;
-        private string layoutZipFile;
-        private string keymapOutputPath;
+        private AppSetting qmkMsys;
+        private AppSetting qmkRepo;
+        private AppSetting keymapOutput;
+        private AppSetting layoutZipFile;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            QmkMsysPath = Properties.Settings.Default.QmkMsysPath;
-            QmkRepoPath = Properties.Settings.Default.QmkRepoPath;
-            LayoutZipFile = Properties.Settings.Default.LayoutZipFile;
-            KeymapOutputPath = Properties.Settings.Default.OutputPath;
+            qmkMsys = new AppSetting(SelectedQmkMsysPathText, "QmkMsysPath", Properties.Settings.Default.QmkMsysPath);
+            qmkRepo = new AppSetting(SelectedQmkRepoText, "QmkRepoPath", Properties.Settings.Default.QmkRepoPath);
+            layoutZipFile = new AppSetting(SelectedZipFileText, "LayoutZipFile", Properties.Settings.Default.LayoutZipFile);
+            keymapOutput = new AppSetting(SelectedKeymapOutputText, "OutputPath", Properties.Settings.Default.OutputPath);
         }
 
         private void SetQmkMsysPathButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -82,8 +32,7 @@ namespace AutoLayout
 
             if (openFileDialog.ShowDialog() == true)
             {
-                QmkMsysPath = openFileDialog.FileName;
-                Properties.Settings.Default.QmkMsysPath = QmkMsysPath;
+                qmkMsys.Value = openFileDialog.FileName;
             }
         }
 
@@ -96,8 +45,7 @@ namespace AutoLayout
 
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                QmkRepoPath = dialog.FileName;
-                Properties.Settings.Default.QmkRepoPath = QmkRepoPath;
+                qmkRepo.Value = dialog.FileName;
             }
         }
 
@@ -107,8 +55,7 @@ namespace AutoLayout
 
             if (openFileDialog.ShowDialog() == true)
             {
-                LayoutZipFile = openFileDialog.FileName;
-                Properties.Settings.Default.LayoutZipFile = LayoutZipFile;
+                layoutZipFile.Value = openFileDialog.FileName;
             }
         }
 
@@ -121,24 +68,23 @@ namespace AutoLayout
 
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                KeymapOutputPath = dialog.FileName;
-                Properties.Settings.Default.OutputPath = KeymapOutputPath;
+                keymapOutput.Value = dialog.FileName;
             }
         }
 
         private void MakeButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (LayoutZipFile == null) return;
-            if (QmkMsysPath == null) return;
-            if (KeymapOutputPath == null) return;
-            if (QmkRepoPath == null) return;
+            if (layoutZipFile.Value == null) return;
+            if (qmkMsys.Value == null) return;
+            if (keymapOutput.Value == null) return;
+            if (qmkRepo.Value == null) return;
 
-            DirectoryInfo unzippedDirectory = Unzipper.UnzipLayoutFile(LayoutZipFile);
+            DirectoryInfo unzippedDirectory = Unzipper.UnzipLayoutFile(layoutZipFile.Value);
             FileInfo keymapFile = KeymapFileGetter.GetKeymapFile(unzippedDirectory);
             KeymapModifier.InsertCode(keymapFile);
 
-            QmkMsysManager.CopyFiles(keymapFile.Directory, KeymapOutputPath);
-            QmkMsysManager.Launch(QmkMsysPath, QmkRepoPath);
+            QmkMsysManager.CopyFiles(keymapFile.Directory, keymapOutput.Value);
+            QmkMsysManager.Launch(qmkMsys.Value, qmkRepo.Value);
         }
 
 

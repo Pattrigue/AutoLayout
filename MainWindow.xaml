@@ -27,7 +27,7 @@
         </Grid.RowDefinitions>
         <Label Name="SelectedQmkMsysPathText" Content="No QMK MSYS path set..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="658" Grid.Column="1" Grid.Row="1"/>
         <Button Content="Set QMK MSYS path" HorizontalAlignment="Center" VerticalAlignment="Top" Width="122" Click="SetQmkMsysPathButton_Click" Margin="{StaticResource ButtonMargin}" Grid.Column="1" Grid.Row="1" />
-        <Label Name="SelectedFileText" Content="No file selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="658" Grid.Column="1" Grid.Row="2"/>
+        <Label Name="SelectedZipFileText" Content="No file selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="658" Grid.Column="1" Grid.Row="2"/>
         <Button Content="Select file" HorizontalAlignment="Center" Margin="{StaticResource ButtonMargin}" VerticalAlignment="Top" Width="122" Click="FileSelectButton_Click" Grid.Column="1" Grid.Row="2"/>
         <Label Name="SelectedKeymapOutputText" Content="No output directory selected..." HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="668" Grid.Column="1" Grid.Row="3"/>
         <Button Content="Set output directory" HorizontalAlignment="Center" Margin="{StaticResource ButtonMargin}" VerticalAlignment="Top" Width="122" Click="OutputSelectButton_Click" Grid.Column="1" Grid.Row="3"/>
