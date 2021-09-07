@@ -20,6 +20,7 @@ namespace AutoLayout
             InsertInclude(lines);
             InsertProcessInput(lines);
             InsertMatrixScan(lines);
+            ReplaceDualFunctionShiftEnter(lines);
 
             File.WriteAllLines(file.FullName, lines);
         }
@@ -63,6 +64,20 @@ namespace AutoLayout
         private static void InsertMatrixScan(List<string> lines)
         {
             lines.Add(MatrixScanString);
+        }
+
+        private static void ReplaceDualFunctionShiftEnter(List<string> lines)
+        {
+            for (int i = 0; i < lines.Count; i++)
+            {
+                string line = lines[i];
+
+                if (line.Contains("RSFT_T(KC_ENTER)"))
+                {
+                    lines[i] = line.Replace("RSFT_T(KC_ENTER)", "KC_SFTENT");
+                    return;
+                }
+            }
         }
 
         private static void InsertCFile(string directory)
