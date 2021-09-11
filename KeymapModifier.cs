@@ -20,6 +20,7 @@ namespace AutoLayout
             InsertInclude(lines);
             InsertProcessInput(lines);
             InsertMatrixScan(lines);
+            RemoveGSuspendState(lines);
             ReplaceDualFunctionShiftEnter(lines);
 
             File.WriteAllLines(file.FullName, lines);
@@ -76,6 +77,19 @@ namespace AutoLayout
                 {
                     lines[i] = line.Replace("RSFT_T(KC_ENTER)", "KC_SFTENT");
                     return;
+                }
+            }
+        }
+
+        private static void RemoveGSuspendState(List<string> lines)
+        {
+            for (int i = 0; i < lines.Count; i++)
+            {
+                string line = lines[i];
+
+                if (line.Contains("g_suspend_state"))
+                {
+                    lines[i] = string.Empty;
                 }
             }
         }
